@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RankSuchak - Exam Tools</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f3f6fb;
+      color: #172554;
+    }
+    header {
+      background: #123b75;
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; }
+    nav {
+      background: white;
+      padding: 14px;
+      text-align: center;
+      box-shadow: 0 2px 8px #0001;
+    }
+    nav a {
+      color: #123b75;
+      text-decoration: none;
+      margin: 0 10px;
+      font-weight: bold;
+    }
+    main {
+      max-width: 760px;
+      margin: 25px auto;
+      padding: 0 15px;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 3px 14px #0000000d;
+    }
+    label { display: block; margin-top: 14px; }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 6px;
+      border: 1px solid #ccd5e2;
+      border-radius: 8px;
+    }
+    button {
+      background: #1765d1;
+      color: white;
+      border: 0;
+      padding: 12px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 18px;
+    }
+    #result {
+      margin-top: 18px;
+      font-weight: bold;
+      overflow-wrap: anywhere;
+    }
+    footer {
+      text-align: center;
+      padding: 22px;
+      color: #52627a;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>RankSuchak</h1>
+    <p>आपकी परीक्षा, आपके अंक, आपकी तैयारी!</p>
+    <p>Exam Answer Key & Rank Predictor</p>
+  </header>
+
+  <nav>
+    <a href="#calculator">Marks Calculator</a>
+    <a href="#rank">Rank Predictor</a>
+  </nav>
+
+  <main>
+    <section class="card" id="calculator">
+      <h2>📝 Answer Key Marks Calculator</h2>
+      <p>अपने सही और गलत उत्तरों की संख्या भरें।</p>
+
+      <label for="correct">Correct Answers / सही उत्तर</label>
+      <input id="correct" type="number" min="0" value="60">
+
+      <label for="wrong">Wrong Answers / गलत उत्तर</label>
+      <input id="wrong" type="number" min="0" value="20">
+
+      <label for="marks">Marks per Correct Answer / प्रति सही अंक</label>
+      <input id="marks" type="number" min="0" step="0.25" value="1">
+
+      <label for="negative">Negative Marks per Wrong Answer / प्रति गलत कटौती</label>
+      <input id="negative" type="number" min="0" step="0.25" value="0.25">
+
+      <button type="button" onclick="calculateMarks()">Calculate Marks / अंक निकालें</button>
+      <div id="result" aria-live="polite"></div>
+    </section>
+
+    <section class="card" id="rank">
+      <h2>📊 Rank Predictor</h2>
+      <p>Rank Predictor का फीचर अगले चरण में जोड़ा जाएगा। सही अनुमान के लिए परीक्षा के वास्तविक डेटा की जरूरत होगी।</p>
+    </section>
+  </main>
+
+  <footer>© 2026 RankSuchak | Independent Exam Tools</footer>
+
+  <script>
+    function calculateMarks() {
+      const correct = Number(document.getElementById('correct').value);
+      const wrong = Number(document.getElementById('wrong').value);
+      const marks = Number(document.getElementById('marks').value);
+      const negative = Number(document.getElementById('negative').value);
+      const result = document.getElementById('result');
+
+      if (
+        document.getElementById('correct').value === '' ||
+        document.getElementById('wrong').value === '' ||
+        document.getElementById('marks').value === '' ||
+        document.getElementById('negative').value === '' ||
+        ![correct, wrong, marks, negative].every(Number.isFinite) ||
+        correct < 0 || wrong < 0 || marks < 0 || negative < 0 ||
+        !Number.isInteger(correct) || !Number.isInteger(wrong)
+      ) {
+        result.textContent = 'कृपया सभी बॉक्स में सही और शून्य या उससे अधिक मान भरें।';
+        return;
+      }
+
+      const score = correct * marks - wrong * negative;
+      result.textContent = 'आपके अनुमानित अंक / Estimated Marks: ' +
+        Number(score.toFixed(2));
+    }
+  </script>
+</body>
+</html>
